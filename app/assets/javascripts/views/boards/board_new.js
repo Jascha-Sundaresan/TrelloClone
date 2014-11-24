@@ -18,22 +18,19 @@ TrelloClone.Views.BoardNew = Backbone.View.extend({
     event.preventDefault();
     var model = new TrelloClone.Models.Board();
     var title = $(event.currentTarget).find("#title").val();
-    model.set("title", title);
     var that = this;
-    model.save({},{
+    model.save({ title: title },{
       success: function (){
         var urlString = "#boards/" + model.escape("id");
         Backbone.history.navigate(urlString, { trigger: true });
-        // that.collection.add(model);
-        // that.renderButton();
       }
     });
   },
 
-  renderButton: function(){
+  render: function(){
     var content = this.buttonTemplate();
     this.$el.html(content);
-    // return this;
+    return this;
   }
 
 })

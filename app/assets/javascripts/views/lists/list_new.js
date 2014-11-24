@@ -1,4 +1,7 @@
 TrelloClone.Views.ListNew = Backbone.View.extend({
+  initialize: function(options){
+    this.board_id = options.board_id
+  },
 
   events: {
     "click button#add-list": "createListForm",
@@ -8,9 +11,10 @@ TrelloClone.Views.ListNew = Backbone.View.extend({
   buttonTemplate: JST['lists/newButton'],
   formTemplate: JST['lists/newForm'],
 
-  renderButton: function(){
+  render: function(){
     var content = this.buttonTemplate();
     this.$el.html(content);
+    return this;
   },
 
   createListForm: function (event) {
@@ -21,15 +25,13 @@ TrelloClone.Views.ListNew = Backbone.View.extend({
 
   addNewList: function (event) {
     event.preventDefault();
-    var list = new TrelloClone.Models.List();
+    var list = new TrelloClone.Models.List([], { board: this.board });
     var title = $(event.currentTarget).find("#title").val();
-    list.set("title", title);
-    var that = this;
-    list.save({},{
+    list.save({ title: title, board_id: this.board_id },{
       success: function(){
-        that.collection.add(list);
-        that.renderButton();
-      }
+        this.collection.add(list);
+        this.render();
+      }.bind(this)
     });
   }
 })
