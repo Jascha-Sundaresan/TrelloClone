@@ -19,6 +19,12 @@ TrelloClone.Routers.Boards = Backbone.Router.extend({
     this.$mainEl.html($boardEl);
     $boardEl.html(view.$el);
     view.render();
+    var listButtonView = new TrelloClone.Views.ListNew( { collection: board.lists() });
+    $newList = $("<div>");
+    $newList.attr("id", "new-list");
+    $newList.html(listButtonView.$el);
+    $boardEl.append($newList);
+    listButtonView.renderButton();
   },
 
   index: function() {
